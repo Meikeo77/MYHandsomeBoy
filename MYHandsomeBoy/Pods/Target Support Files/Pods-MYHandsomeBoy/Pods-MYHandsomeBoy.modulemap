@@ -1,0 +1,6 @@
+module Pods_MYHandsomeBoy {
+  umbrella header "Pods-MYHandsomeBoy-umbrella.h"
+
+  export *
+  module * { export * }
+}
