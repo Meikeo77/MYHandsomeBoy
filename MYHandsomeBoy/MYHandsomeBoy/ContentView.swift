@@ -2,39 +2,13 @@
 //  ContentView.swift
 //  MYHandsomeBoy
 //
-//  Created by MiaoYe on 2020/8/30.
+//  Created by Meikeo on 2020/9/1.
 //  Copyright © 2020 Meikeo. All rights reserved.
 //
 
 import SwiftUI
 import HandyJSON
 
-struct cellModel: Identifiable {
-    let id: UUID = UUID()
-    let name: String
-    let avatar: String
-    let children: [groupModel]
-}
-
-struct commonRow : View {
-    var model: cellModel
-    var body: some View {
-        return VStack {
-            HStack {
-                Image(model.avatar)
-                    .resizable()
-                    .frame(width: 50, height: 50)
-                Text(model.name)
-                    .font(.headline)
-                    .fontWeight(.heavy)
-                Spacer()
-                Image("arrow")
-            }
-            .frame(height: 55, alignment: .leading)
-            .edgesIgnoringSafeArea(.all)
-        }
-    }
-}
 
 var company : groupModel = getAddressBook()
 private var listData : [cellModel] = [cellModel(name:company.name , avatar: "header", children: company.children!)]
@@ -72,9 +46,8 @@ struct ContentView: View {
     
     var body: some View {
         NavigationView {
-            List(listData) { (model:cellModel) -> cellModel in
-                NavigationLink(destination:MemberListView(dataSource: model.children))
-                commonRow(cellModel: model)
+            List(listData) { (model:cellModel) in
+                NavigationLink(model.name, destination:MemberListView(dataSource: model.children))
             }
         .navigationBarTitle(Text("首页"))
         }

@@ -9,8 +9,36 @@
 import Foundation
 import SwiftUI
 
+
+struct cellModel: Identifiable {
+    let id: UUID = UUID()
+    let name: String
+    let avatar: String
+    let children: [groupModel]
+}
+
+struct commonRow : View {
+    var model: cellModel
+    var body: some View {
+        return VStack {
+            HStack {
+                Image(model.avatar)
+                    .resizable()
+                    .frame(width: 50, height: 50)
+                Text(model.name)
+                    .font(.headline)
+                    .fontWeight(.heavy)
+                Spacer()
+                Image("arrow")
+            }
+            .frame(height: 55, alignment: .leading)
+            .edgesIgnoringSafeArea(.all)
+        }
+    }
+}
+
 struct MemberListView: View {
-    var dataSource: [groupModel]?
+    @State var dataSource: [groupModel] = [groupModel()]
     
     var body: some View {
         Text("123123")
