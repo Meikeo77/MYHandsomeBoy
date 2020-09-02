@@ -21,6 +21,7 @@ struct GroupListView: View {
                 List(groupModel.children!) { (group: MYGroupModel) in
                     NavigationLink(destination: MemeberListView(memberArray: group.members!, progressText:(self.progressText + "->" + self.groupModel.name + "->" + group.name))) {
                         commonRow(avatar: "header", name: group.name, isSelect:group.isSelected)
+                        EmptyView()
                     }
                 }
             }

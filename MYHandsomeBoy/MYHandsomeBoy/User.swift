@@ -34,6 +34,6 @@ class MYGroupModel: HandyJSON, Identifiable {
 }
 
 final class selectedList : ObservableObject {
-   
+    var beenSelectedList:[MYMemberModel] = []
 }
 

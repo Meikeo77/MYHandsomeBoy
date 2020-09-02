@@ -24,14 +24,6 @@ struct commonRow : View {
                     .font(.headline)
                     .fontWeight(.heavy)
                 Spacer()
-                Button(action: {
-                    self.isSelect.toggle()
-                }) {
-                    Image(isSelect ? "select" : "select_un")
-                        .resizable()
-                        .renderingMode(.original)
-                        .frame(width:20, height: 20)
-                }
             }
             .frame(height: 55, alignment: .leading)
             .edgesIgnoringSafeArea(.all)
@@ -95,7 +87,19 @@ struct ContentView: View {
                                
                 List(childrenList) { (group: MYGroupModel) in
                     ZStack {
-                        commonRow(avatar: "header", name: group.name, isSelect: group.isSelected)
+                        HStack{
+                            commonRow(avatar: "header", name: group.name, isSelect: group.isSelected)
+                            Spacer()
+                            Button(action: {
+                                group.isSelected.toggle()
+                            }) {
+                                Image(group.isSelected ? "select" : "select_un")
+                                    .resizable()
+                                    .renderingMode(.original)
+                                    .frame(width:20, height: 20)
+                            }
+                        }
+                        
                         if group.children?.count ?? 0 > 0 {
                             NavigationLink(destination: GroupListView(groupModel: group, progressText: company.name)) {
                                 EmptyView()
