@@ -8,27 +8,32 @@
 
 import Foundation
 import HandyJSON
+import Combine
 
-class memberModel: HandyJSON {
-    var id: String = ""
+class MYMemberModel: HandyJSON, Identifiable {
+    var id: UUID = UUID()
     var weworkUserId: String = ""
-    var nickName: String = ""
+    var nickname: String = ""
     var avatar: String = ""
     var phone: String = ""
-    
+    var isSelected : Bool = false
     required init() {}
 }
 
-class groupModel: HandyJSON {
-    var id: String!
+class MYGroupModel: HandyJSON, Identifiable {
+    var id: UUID = UUID()
     var name: String!
     var parentIds: NSArray?
     var hasSubGroup: Bool!
     var parentIdsString: NSArray?
-    var members: [memberModel]?
-    var children: [groupModel]?
+    var members: [MYMemberModel]?
+    var children: [MYGroupModel]?
+    var isSelected: Bool = false
     
     required init() {}
 }
 
+final class selectedList : ObservableObject {
+   
+}
 

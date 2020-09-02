@@ -9,13 +9,63 @@
 import SwiftUI
 import HandyJSON
 
+struct commonRow : View {
+    let avatar: String
+    let name: String
+    @State var isSelect: Bool
+    var body: some View {
+        return VStack {
+            HStack {
+                Image(avatar)
+                    .resizable()
+                    .frame(width: 40, height: 40)
+                    .cornerRadius(20)
+                Text(name)
+                    .font(.headline)
+                    .fontWeight(.heavy)
+                Spacer()
+                Button(action: {
+                    self.isSelect.toggle()
+                }) {
+                    Image(isSelect ? "select" : "select_un")
+                        .resizable()
+                        .renderingMode(.original)
+                        .frame(width:20, height: 20)
+                }
+            }
+            .frame(height: 55, alignment: .leading)
+            .edgesIgnoringSafeArea(.all)
+        }
+    }
+}
 
-var company : groupModel = getAddressBook()
-private var listData : [cellModel] = [cellModel(name:company.name , avatar: "header", children: company.children!)]
+struct progressView: View {
+    let title: String
+    var body: some View {
+        return HStack {
+            Text(title)
+                .foregroundColor(.gray)
+                .frame(height:30, alignment: .leading)
+                .offset(x: 25)
+            Spacer()
+        }.background(Color.gray.opacity(0.3))
+    }
+}
+
+struct sureButton: View {
+    var canEdit: Bool
+    var body: some View  {
+        return Button(action: {}){
+            Text("确定")
+                .foregroundColor(Color.blue)
+                .font(Font.caption)
+        }
+    }
+}
 
 
-func getAddressBook() -> groupModel {
-    var group : groupModel = groupModel()
+func getAddressBook() -> MYGroupModel {
+    var group : MYGroupModel = MYGroupModel()
     let path = Bundle.main.path(forResource: "addressBook", ofType: "json")
     let url = URL(fileURLWithPath: path!)
     do {
@@ -23,33 +73,44 @@ func getAddressBook() -> groupModel {
         let jsonData:Any = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers)
         let jsonDic = jsonData as! NSDictionary
         let result : NSDictionary = jsonDic["result"] as! NSDictionary
-        group = groupModel.deserialize(from: result)!
+        group = MYGroupModel.deserialize(from: result)!
         
     } catch let error as Error? {
-        print("读取本地数据出现错误!",error)
+        print("读取本地数据出现错误!",error?.localizedDescription as Any)
     }
     return group
 }
 
 
+var company : MYGroupModel = getAddressBook()
+var childrenList: [MYGroupModel] = company.children!
 
 struct ContentView: View {
-    
-    init() {
-        UITableView.appearance().backgroundColor = UIColor(named: "ListBackgroundColor")
-        UITableViewCell.appearance().backgroundColor = UIColor(named: "CellBackgroundColor")
-        UITableView.appearance().tableFooterView = UIView()
-        UITableView.appearance().separatorColor = UIColor(named: "ListBackgroundColor")
-        UITableView.appearance().separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        UITableViewCell.appearance().accessoryType = .none
-    }
+    @State var groupItem : MYGroupModel = MYGroupModel()
     
     var body: some View {
-        NavigationView {
-            List(listData) { (model:cellModel) in
-                NavigationLink(model.name, destination:MemberListView(dataSource: model.children))
+        return NavigationView {
+            VStack {
+                progressView(title: company.name)
+                               
+                List(childrenList) { (group: MYGroupModel) in
+                    ZStack {
+                        commonRow(avatar: "header", name: group.name, isSelect: group.isSelected)
+                        if group.children?.count ?? 0 > 0 {
+                            NavigationLink(destination: GroupListView(groupModel: group, progressText: company.name)) {
+                                EmptyView()
+                            }
+                        }else {
+                            NavigationLink(destination:MemeberListView(memberArray: group.members!, progressText: company.name + "->" + group.name)) {
+                                EmptyView()
+                            }
+                        }
+                    }
+                }
+                .navigationBarTitle("通讯录", displayMode: .inline)
+                .navigationBarItems(trailing: sureButton(canEdit: true))
+                .listStyle(PlainListStyle())
             }
-        .navigationBarTitle(Text("首页"))
         }
     }
 }
