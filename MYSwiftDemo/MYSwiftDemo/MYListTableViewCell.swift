@@ -20,11 +20,14 @@ class MYListTableViewCell: UITableViewCell {
     var header: String!
     var name: String!
     var cellType: listCellType!
-    var isBeenSelect: Bool = false
     
-    var headerImage: UIImageView = UIImageView()
-    var nameLabel: UILabel = UILabel()
-    var selectButton: UIButton = UIButton()
+    typealias selectBtnTapBlock = (Bool) -> ()
+    var tapBlock: selectBtnTapBlock?
+    
+    
+    let headerImage: UIImageView = UIImageView()
+    let nameLabel: UILabel = UILabel()
+    let selectButton: UIButton = UIButton()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -47,6 +50,7 @@ class MYListTableViewCell: UITableViewCell {
         
         selectButton.setImage(UIImage(named: "select_un"), for: .normal)
         selectButton.setImage(UIImage(named: "select"), for: .selected)
+        selectButton.addTarget(self, action: #selector(selectBtnAction), for: .touchUpInside)
         self.contentView.addSubview(selectButton)
         
         headerImage.snp.makeConstraints {
@@ -68,22 +72,45 @@ class MYListTableViewCell: UITableViewCell {
             $0.width.equalTo(40)
             $0.trailing.equalToSuperview().offset((-15))
         }
-        
-        if cellType == listCellType.homeCellType {
-            self.selectButton.isHidden = true
-        }
     }
     
     func fillViewWithValue(header:String , nameString:String, isBeenSelect:Bool) {
         nameLabel.text = nameString
         
-        if (cellType == listCellType.groupCellType){
-            self.selectButton.isSelected = isBeenSelect
-            headerImage.image = UIImage(named: header)
-
-        }else if (cellType == listCellType.memberCellType)  {
-            self.selectButton.isSelected = isBeenSelect
-            headerImage.af.setImage(withURL: URL(string: header)!)
+        switch cellType {
+            case .groupCellType:
+                self.selectButton.isSelected = isBeenSelect
+                headerImage.image = UIImage(named: header)
+                break
+                
+            case .memberCellType:
+                self.selectButton.isSelected = isBeenSelect
+                headerImage.af.setImage(withURL: URL(string: header)!)
+                break
+                
+            case .homeCellType:
+                self.selectButton.isHidden = true
+                headerImage.af.setImage(withURL: URL(string: header)!)
+                break
+                
+            default:
+                break
+            }
+    }
+    
+    @objc func selectBtnAction(button: UIButton) -> Void {
+        if self.cellType == .groupCellType {
+            if button.isSelected {
+                button.isSelected = false
+                if self.tapBlock != nil {
+                    self.tapBlock!(button.isSelected)
+                }
+            }
+        }else if self.cellType == .memberCellType {
+            button.isSelected = !button.isSelected
+            if self.tapBlock != nil {
+                self.tapBlock!(button.isSelected)
+            }
         }
     }
     

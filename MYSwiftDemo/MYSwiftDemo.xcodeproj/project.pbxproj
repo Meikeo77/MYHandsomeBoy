@@ -17,7 +17,6 @@
 		F54CA0FD2500D811008583D8 /* MYHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54CA0FC2500D811008583D8 /* MYHome.swift */; };
 		F54CA0FF2500DB06008583D8 /* MYListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54CA0FE2500DB06008583D8 /* MYListTableViewCell.swift */; };
 		F54CA1032500EBC6008583D8 /* MYGroupSelectList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54CA1022500EBC6008583D8 /* MYGroupSelectList.swift */; };
-		F54CA1052500EBD6008583D8 /* MYMemberSelectList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54CA1042500EBD6008583D8 /* MYMemberSelectList.swift */; };
 		F54CA10725010928008583D8 /* MYProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54CA10625010928008583D8 /* MYProgressView.swift */; };
 /* End PBXBuildFile section */
 
@@ -36,7 +35,6 @@
 		F54CA0FC2500D811008583D8 /* MYHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MYHome.swift; sourceTree = "<group>"; };
 		F54CA0FE2500DB06008583D8 /* MYListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MYListTableViewCell.swift; sourceTree = "<group>"; };
 		F54CA1022500EBC6008583D8 /* MYGroupSelectList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MYGroupSelectList.swift; sourceTree = "<group>"; };
-		F54CA1042500EBD6008583D8 /* MYMemberSelectList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MYMemberSelectList.swift; sourceTree = "<group>"; };
 		F54CA10625010928008583D8 /* MYProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MYProgressView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -94,7 +92,6 @@
 				F54CA0F62500CFDB008583D8 /* MyModel.swift */,
 				F54CA0FC2500D811008583D8 /* MYHome.swift */,
 				F54CA1022500EBC6008583D8 /* MYGroupSelectList.swift */,
-				F54CA1042500EBD6008583D8 /* MYMemberSelectList.swift */,
 				F54CA10625010928008583D8 /* MYProgressView.swift */,
 				F54CA0FE2500DB06008583D8 /* MYListTableViewCell.swift */,
 				F54CA0DC2500CAA0008583D8 /* AppDelegate.swift */,
@@ -211,7 +208,6 @@
 				F54CA0DD2500CAA0008583D8 /* AppDelegate.swift in Sources */,
 				F54CA10725010928008583D8 /* MYProgressView.swift in Sources */,
 				F54CA0F72500CFDB008583D8 /* MyModel.swift in Sources */,
-				F54CA1052500EBD6008583D8 /* MYMemberSelectList.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

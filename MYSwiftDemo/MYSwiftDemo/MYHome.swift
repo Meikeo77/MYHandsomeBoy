@@ -36,7 +36,8 @@ class MYHome: UIViewController,UITableViewDelegate,UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        self.companyModel = readAddressBook()
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.edgesForExtendedLayout = UIRectEdge.init(rawValue: 0)
         
         self.navigationItem.title = "谁是最帅的人"
         let rightBarButtonItem = UIBarButtonItem(title: "开始选择", style: .plain, target: self, action: #selector(self.rightClick))
@@ -48,11 +49,36 @@ class MYHome: UIViewController,UITableViewDelegate,UITableViewDataSource {
         self.tableView.register(MYListTableViewCell.classForCoder(), forCellReuseIdentifier: cellIdentifier)
         self.view.addSubview(tableView)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(selectCompleteAction), name: NSNotification.Name("selectComplete"), object: nil)
+        
     }
     
-    @objc func rightClick() -> Void {
-        let selectVC : MYGroupSelectList = MYGroupSelectList(groupModel: self.companyModel!)
+    @objc func selectCompleteAction() {
+        //取出所有的member
+        self.selectedList = []
+        self.getAllSelectMemebers(group: self.companyModel!)
+        self.tableView.reloadData()
+    }
+    
+    @objc func rightClick() {
+        self.companyModel = readAddressBook()
+        let selectVC : MYGroupSelectList = MYGroupSelectList(groupModel: self.companyModel!, progress: "")
         self.navigationController?.pushViewController(selectVC, animated: true)
+    }
+    
+    func getAllSelectMemebers(group: MYGroupModel) {
+        
+        if group.children.count > 0 {
+            for item in group.children {
+                getAllSelectMemebers(group: item)
+            }
+        }else if group.members.count > 0 {
+            for memeber in group.members {
+                if memeber.isSelected {
+                    self.selectedList?.append(memeber)
+                }
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -64,10 +90,10 @@ class MYHome: UIViewController,UITableViewDelegate,UITableViewDataSource {
         
         let memberModel : MYMemberModel = self.selectedList![indexPath.row]
         
-        customCell.cellType = listCellType.homeCellType
+        customCell.cellType = .homeCellType
         customCell.fillViewWithValue(header: memberModel.avatar, nameString: memberModel.nickname, isBeenSelect: false)
         
-        
+        customCell.selectionStyle = .none
         return customCell
     }
     

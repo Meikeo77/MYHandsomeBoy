@@ -25,9 +25,8 @@ class MYGroupModel: HandyJSON {
     var avatar: String = "header"
     var parentIds: NSArray?
     var hasSubGroup: Bool!
-    var parentIdsString: NSArray?
-    var members: [MYMemberModel]?
-    var children: [MYGroupModel]?
+    var members: [MYMemberModel] = []
+    var children: [MYGroupModel] = []
     var isSelected: Bool = false
     
     required init() {}
