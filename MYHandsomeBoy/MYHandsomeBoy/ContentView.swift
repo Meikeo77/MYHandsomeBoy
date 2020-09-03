@@ -24,6 +24,14 @@ struct commonRow : View {
                     .font(.headline)
                     .fontWeight(.heavy)
                 Spacer()
+                Button(action: {
+                    self.isSelect.toggle()
+                }) {
+                    Image(self.isSelect ? "select" : "select_un")
+                        .resizable()
+                        .renderingMode(.original)
+                        .frame(width:20, height: 20)
+                }
             }
             .frame(height: 55, alignment: .leading)
             .edgesIgnoringSafeArea(.all)
@@ -74,32 +82,25 @@ func getAddressBook() -> MYGroupModel {
 }
 
 
-var company : MYGroupModel = getAddressBook()
-var childrenList: [MYGroupModel] = company.children!
+let company : MYGroupModel = getAddressBook()
 
 struct ContentView: View {
-    @State var groupItem : MYGroupModel = MYGroupModel()
+    @State private var groupItem : MYGroupModel = MYGroupModel()
+    @State var active: Bool = false
+    
+    var childrenList: [MYGroupModel] = company.children!
+
+    init() {
+        UITableView.appearance().separatorStyle = .singleLine
+    }
     
     var body: some View {
         return NavigationView {
             VStack {
                 progressView(title: company.name)
-                               
-                List(childrenList) { (group: MYGroupModel) in
+                
+                List(self.childrenList) { (group: MYGroupModel) in
                     ZStack {
-                        HStack{
-                            commonRow(avatar: "header", name: group.name, isSelect: group.isSelected)
-                            Spacer()
-                            Button(action: {
-                                group.isSelected.toggle()
-                            }) {
-                                Image(group.isSelected ? "select" : "select_un")
-                                    .resizable()
-                                    .renderingMode(.original)
-                                    .frame(width:20, height: 20)
-                            }
-                        }
-                        
                         if group.children?.count ?? 0 > 0 {
                             NavigationLink(destination: GroupListView(groupModel: group, progressText: company.name)) {
                                 EmptyView()
@@ -109,6 +110,8 @@ struct ContentView: View {
                                 EmptyView()
                             }
                         }
+                        
+                        commonRow(avatar: "header", name: group.name, isSelect: group.isSelected)
                     }
                 }
                 .navigationBarTitle("通讯录", displayMode: .inline)

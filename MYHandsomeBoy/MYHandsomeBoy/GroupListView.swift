@@ -17,10 +17,10 @@ struct GroupListView: View {
     var body: some View {
         VStack {
             progressView(title: progressText + "->" + groupModel.name)
-            ZStack {
-                List(groupModel.children!) { (group: MYGroupModel) in
+            List(groupModel.children!) { (group: MYGroupModel) in
+                ZStack {
+                    commonRow(avatar: "header", name: group.name, isSelect:group.isSelected)
                     NavigationLink(destination: MemeberListView(memberArray: group.members!, progressText:(self.progressText + "->" + self.groupModel.name + "->" + group.name))) {
-                        commonRow(avatar: "header", name: group.name, isSelect:group.isSelected)
                         EmptyView()
                     }
                 }
